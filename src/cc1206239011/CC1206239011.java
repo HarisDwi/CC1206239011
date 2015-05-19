@@ -26,12 +26,30 @@ public class CC1206239011 {
             coinlist[i] = Integer.parseInt(inline2[i]);
         }
         int[] numcoins = new int[n+1];
-        numcoins[0] = 0;
         int[] lastcoin = new int[n+1];
+        getChange(coinlist, n, k, numcoins, lastcoin);
+        int answersum = 0;
+        String answer = "";
+        int sum = n;
+        while(n > 0){
+            answersum += lastcoin[n];
+            answer += (lastcoin[n] + " ");
+            n -= lastcoin[n];
+        }
+        if(sum < answersum) System.out.println("-1 " + answersum);
+        if(sum == answersum){
+            String[] fin = answer.substring(0, answer.lastIndexOf(" ")).split(" ");
+            for(int i = 0; i < fin.length; i++) System.out.println(fin[i]);
+        }
+        System.out.println();
+    }
+    
+    private static void getChange(int[] coinlist, int n, int k, int[] numcoins, int[] lastcoin){
+        numcoins[0] = 0;
         lastcoin[0] = 0;
         for(int i = 1; i <= n; i++){
             int coins = i;
-            int denom = 1;
+            int denom = coinlist[0];
             for(int j = 0; j < k; j++){
                 if(coinlist[j] > i) continue;
                 if(numcoins[i - coinlist[j]] + 1 < coins){
@@ -42,26 +60,7 @@ public class CC1206239011 {
             numcoins[i] = coins;
             lastcoin[i] = denom;
         }
-        int answersum = 0;
-        String answer = "";
-        int sum = n;
-        while(n > 0){
-            if(lastcoin[n] < coinlist[0]){
-                answersum += coinlist[0];
-                break;
-            }
-            else{
-                answersum += lastcoin[n];
-                answer += (lastcoin[n] + " ");
-            }
-            n -= lastcoin[n];
-        }
-        if(sum < answersum) System.out.println("-1 " + answersum);
-        if(sum == answersum){
-            String[] fin = answer.substring(0, answer.lastIndexOf(" ")).split(" ");
-            for(int i = 0; i < fin.length; i++) System.out.println(fin[i]);
-        }
-        System.out.println();
     }
+    
     
 }
